@@ -103,10 +103,9 @@ class Pizza:
 # - Repeat the loop as needed.
 # - AFTER the loop, print how many orders were placed.
 class Pizzeria:
-    price_per_topping = 0.30
-    price_per_inch = 0.60
-
     def __init__(self):
+        self.price_per_topping = 0.30
+        self.price_per_inch = 0.60
         self.orders = 0
         self.pizzas = []
 
