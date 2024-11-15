@@ -102,78 +102,75 @@ class Pizza:
 # - After the order is placed, call the getReceipt() method.
 # - Repeat the loop as needed.
 # - AFTER the loop, print how many orders were placed.
-class Pizzaria:
-    def __init__ (self):
-        self.price_per_topping = 0.30
-        self.price_per_inch = 0.60
-        self.orders = 0
-        self.pizza = []
-    def placeOrders(self):
-        size = int(input("Eneter the size of the pizza:"))
-        sauce = input("Enter the sauce :")
-        if not sauce:
-            sauce="red"
+class Pizzeria:
+    price_per_topping = 0.30
+    price_per_inch = 0.60
 
-            toppings = []
-        print("Enter toppings (type 'done' when finished):")
+    def __init__(self):
+        self.orders = 0
+        self.pizzas = []
+
+    def placeOrder(self):
+        size = int(input("Enter the size of the pizza : "))
+
+        sauce = input("Enter the type of sauce: ")
+        if not sauce:
+            sauce = "red"
+
+       
+        toppings = []
+        print("Enter each topping, / press Enter with no input to finish.")
         while True:
-            topping = input()
-            if topping.lower() == 'done':
+            topping = input("Add a topping: ")
+            if topping == "":
                 break
             toppings.append(topping)
-        
-        pizza = Pizza(size, sauce)
-        pizza.add_toppings(*toppings)
+
+        pizza = Pizza(size, sauce, toppings)
         self.pizzas.append(pizza)
+        
         self.orders += 1
 
-    def get_price(self, pizza):
-        return (pizza.get_size() * self.price_per_inch) + (pizza.get_amount_of_toppings() * self.price_per_topping)
+    def getPrice(self, pizza):
+        price = (pizza.getSize() * Pizzeria.price_per_inch) + \
+                (pizza.getAmountOfToppings() * Pizzeria.price_per_topping)
+        return price
 
-    def get_receipt(self, pizza):
-        size_price = pizza.get_size() * self.price_per_inch
-        toppings_price = pizza.get_amount_of_toppings() * self.price_per_topping
-        total_price = size_price + toppings_price
+    def getReceipt(self):
+        pizza = self.pizzas[-1]
+        size_price = pizza.getSize() * Pizzeria.price_per_inch
+        toppings_price = pizza.getAmountOfToppings() * Pizzeria.price_per_topping
+        total_price = self.getPrice(pizza)
 
-        receipt = (
-            f"Receipt:\n"
-            f"Sauce: {pizza.get_sauce()}\n"
-            f"Size: {pizza.get_size()} inches\n"
-            f"Toppings: {', '.join(pizza.get_toppings())}\n"
-            f"Price for size: ${size_price:.2f}\n"
-            f"Price for toppings: ${toppings_price:.2f}\n"
-            f"Total price: ${total_price:.2f}\n"
-        )
-        print(receipt)
+        
+        print("\n--- Pizza Receipt ---")
+        print(f"Sauce: {pizza.getSauce()}")
+        print(f"Size: {pizza.getSize()} inches")
+        print(f"Toppings: {', '.join(pizza.getToppings()) if pizza.getToppings() else 'None'}")
+        print(f"Price for size: ${size_price:.2f}")
+        print(f"Price for toppings: ${toppings_price:.2f}")
+        print(f"Total price: ${total_price:.2f}")
+        print("--- End of Receipt ---\n")
 
-    def get_number_of_orders(self):
+    def getNumberOfOrders(self):
         return self.orders
 
 
-# Main program
 pizzeria = Pizzeria()
 
 while True:
-    order = input("Do you want to order a pizza? (type 'exit' to quit): ")
-    if order.lower() == 'exit':
+    choice = input("Do you want to order a pizza?: ").strip().lower()
+    if choice == 'exit':
         break
-    pizzeria.place_order()
-    pizzeria.get_receipt(pizzeria.pizzas[-1])
-
-print(f"Total number of orders placed: {pizzeria.get_number_of_orders()}")
+    elif choice == 'yes':
+        pizzeria.placeOrder()
+        pizzeria.getReceipt()
+print(f"Total number of orders placed: {pizzeria.getNumberOfOrders()}")
 
 
 # Example output:
 """
-        
-        pizza = Pizza(size, sauce)
-        pizza.add_toppings(*toppings)
-        self.pizzas.append(pizza)
-        self.orders += 1
-
-
-
-Would you like to place an order? exit to exit
+ Would you like to place an order? exit to exit
 yes
 Please enter the size of pizza, as a whole number. The smallest size is 10
 20
